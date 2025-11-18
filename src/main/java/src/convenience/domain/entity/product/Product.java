@@ -1,11 +1,11 @@
-package src.convenience.domain.entity;
+package src.convenience.domain.entity.product;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "product")
@@ -15,7 +15,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "price")
@@ -51,15 +51,6 @@ public class Product {
     public boolean compareQuantity(int quantityToCompare) {
         return this.quantity >= quantityToCompare;
     }
-
-    public boolean checkPromotion(String promotion) {
-        return this.promotion.equals(promotion);
-    }
-
-    public int productPrice(int quantity) {
-        return this.price * quantity;
-    }
-
 
     public Long getId() {
         return id;
