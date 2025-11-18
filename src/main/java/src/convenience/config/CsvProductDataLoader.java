@@ -5,8 +5,8 @@ import java.io.InputStreamReader;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import src.convenience.domain.entity.Product;
-import src.convenience.domain.entity.ProductRepository;
+import src.convenience.domain.entity.product.Product;
+import src.convenience.domain.entity.product.ProductRepository;
 
 import java.util.List;
 
