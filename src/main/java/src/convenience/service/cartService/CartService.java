@@ -1,11 +1,11 @@
-package src.convenience.service;
+package src.convenience.service.cartService;
 
 import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import src.convenience.domain.cart.Cart;
-import src.convenience.domain.entity.Product;
-import src.convenience.domain.entity.ProductRepository;
+import src.convenience.domain.entity.product.Product;
+import src.convenience.domain.entity.product.ProductRepository;
 
 @Service
 public class CartService {

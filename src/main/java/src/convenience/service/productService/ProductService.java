@@ -1,9 +1,9 @@
-package src.convenience.service;
+package src.convenience.service.productService;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import src.convenience.domain.entity.ProductRepository;
+import src.convenience.domain.entity.product.ProductRepository;
 import src.convenience.dto.product.ProductResponse;
 
 @Service
