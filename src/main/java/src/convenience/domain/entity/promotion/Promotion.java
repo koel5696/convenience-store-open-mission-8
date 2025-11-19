@@ -65,7 +65,7 @@ public class Promotion {
 
     public PromotionResult applyPromotion(int quantity) {
         if(!checkNonePromotion() && checkPromotionDate()) {
-            return calculatePromotion(quantity); // 일단 존재하고 프로모션 날짜일 때
+            return calculatePromotion(quantity);
         }
         return new PromotionResult(quantity, 0);
     }
@@ -78,13 +78,13 @@ public class Promotion {
         return promotionEndDate;
     }
 
+    public boolean checkNonePromotion() {
+        return name.equals(NONE_PROMOTION);
+    }
+
     private boolean checkPromotionDate() {
         LocalDate nowDate = LocalDate.now();
         return !nowDate.isBefore(promotionStartDate) && !nowDate.isAfter(promotionEndDate);
-    }
-
-    private boolean checkNonePromotion() {
-        return name.equals(NONE_PROMOTION);
     }
 
     private PromotionResult calculatePromotion(int quantity) {
