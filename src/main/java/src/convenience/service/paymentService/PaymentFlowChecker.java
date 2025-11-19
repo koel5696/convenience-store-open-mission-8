@@ -3,11 +3,13 @@ package src.convenience.service.paymentService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import src.convenience.domain.entity.promotion.Promotion;
+
 import src.convenience.domain.entity.product.Product;
 import src.convenience.domain.entity.product.ProductRepository;
+import src.convenience.domain.entity.promotion.Promotion;
 import src.convenience.domain.entity.promotion.PromotionRepository;
 import src.convenience.dto.payment.PayRequest;
 import src.convenience.dto.payment.PromotionSuggestionsResponse;
@@ -28,19 +30,22 @@ public class PaymentFlowChecker {
 
     @Transactional(readOnly = true)
     public void checkFlow(PayRequest request, Map<Long, Integer> items) {
-        validatePromotionSelection(request.missingPromotion(), items);
-        validatePromotionSelection(request.insufficientStock(), items);
+        PromotionSuggestionsResponse suggestions = analyzePromotion(items);
+
+        validateMissingPromotion(request.missingPromotion(), suggestions.upsells());
+        validateStockIssue(request.insufficientStock(), suggestions.stockIssues());
         validateMembership(request.membership());
     }
 
-    private void validatePromotionSelection(Boolean selection, Map<Long, Integer> items) {
-        if (selection != null) {
-            return;
+    private void validateMissingPromotion(Boolean userSelection, List<PromotionOption> upsells) {
+        if (!upsells.isEmpty() && userSelection == null) {
+            throw new PromotionProductException(new PromotionSuggestionsResponse(upsells, List.of()));
         }
+    }
 
-        PromotionSuggestionsResponse suggestions = promotionAnalyze(items);
-        if (suggestions.hasSuggestions()) {
-            throw new PromotionProductException(suggestions);
+    private void validateStockIssue(Boolean userSelection, List<PromotionOption> stockIssues) {
+        if (!stockIssues.isEmpty() && userSelection == null) {
+            throw new PromotionProductException(new PromotionSuggestionsResponse(List.of(), stockIssues));
         }
     }
 
@@ -50,24 +55,24 @@ public class PaymentFlowChecker {
         }
     }
 
-    private PromotionSuggestionsResponse promotionAnalyze(Map<Long, Integer> items) {
+    private PromotionSuggestionsResponse analyzePromotion(Map<Long, Integer> items) {
         List<PromotionOption> upsells = new ArrayList<>();
         List<PromotionOption> stockIssues = new ArrayList<>();
 
         items.forEach((productId, quantity) -> {
             Product product = productRepository.getByIdOrThrow(productId);
             Promotion promotion = promotionRepository.promotionCreate(product.getPromotion());
+
             if (promotion.isMissingPromotion(quantity)) {
                 addSuggestion(product, quantity, upsells, stockIssues);
             }
         });
-
         return new PromotionSuggestionsResponse(upsells, stockIssues);
     }
 
-
     private void addSuggestion(Product product, int quantity,
                                List<PromotionOption> upsells, List<PromotionOption> stockIssues) {
+
         if (product.compareQuantity(quantity + 1)) {
             upsells.add(new PromotionOption(product.getName(), product.getPromotion()));
             return;
