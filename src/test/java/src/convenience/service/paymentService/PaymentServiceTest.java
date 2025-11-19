@@ -41,7 +41,7 @@ class PaymentServiceTest {
 
     private void cartSetup() {
         cart.addItem(1L, 6);
-        cart.addItem(2L, 3);
+        cart.addItem(2L, 2);
         cart.addItem(9L, 16);
     }
 
