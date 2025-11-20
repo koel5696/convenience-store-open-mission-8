@@ -8,7 +8,7 @@ import src.convenience.dto.receipt.ReceiptResponse.ReceiptItem;
 @Component
 public class Membership {
     private static final int DISCOUNT_PERCENT = 10;
-    private static final int MAX_DISCOUNT_AMOUNT = 8000;
+    private static final int MAX_DISCOUNT_AMOUNT = 10000;
 
     public int discount(PayRequest request, List<ReceiptItem> items) {
         if (Boolean.TRUE.equals(request.membership())) {
