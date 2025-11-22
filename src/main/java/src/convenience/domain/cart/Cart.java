@@ -1,6 +1,5 @@
 package src.convenience.domain.cart;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,7 @@ public class Cart {
     Map<Long, Integer> items = new HashMap<>();
 
     public void addItem(Long productId, int quantity) {
-            items.put(productId, items.getOrDefault(productId, 0) + quantity);
+        items.put(productId, items.getOrDefault(productId, 0) + quantity);
     }
 
     public void removeItem(Long productId) {
@@ -32,16 +31,15 @@ public class Cart {
 
     public void checkCartEmpty() {
         if (items == null || items.isEmpty()) {
-            throw new IllegalArgumentException("장바구니가 비어있습니다.");
+            throw new IllegalArgumentException("장바구니가 비어있습니다");
         }
     }
 
     public int currentQuantity(Long productId) {
         Integer quantity = items.get(productId);
-        if(quantity == null) {
+        if (quantity == null) {
             return 0;
         }
         return quantity;
     }
-
 }
