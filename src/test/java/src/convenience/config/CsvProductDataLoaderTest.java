@@ -1,6 +1,7 @@
 package src.convenience.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static src.convenience.domain.entity.promotion.promotionPolicy.PromotionType.TWO_PLUS_ONE;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,6 @@ class CsvProductDataLoaderTest {
         assertThat(products)
                 .filteredOn(p -> p.getName().equals("콜라"))
                 .extracting(Product::getPromotion)
-                .contains("2+1");
+                .contains(TWO_PLUS_ONE.getPromotionType());
     }
 }
