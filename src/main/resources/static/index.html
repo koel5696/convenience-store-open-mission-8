@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>우아한 편의점</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/js/script.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="product-section">
+        <h2>🏪 우아한 편의점</h2>
+        <div id="product-list" class="product-grid"></div>
+    </div>
+
+    <div class="cart-section">
+        <h3>🛒 장바구니</h3>
+        <ul id="cart-list" class="cart-list">
+            <li>장바구니가 비었습니다.</li>
+        </ul>
+        <div id="cart-total-count" class="cart-total"></div>
+
+        <button onclick="startPayment()" class="btn checkout-btn">결제하기</button>
+
+        <div id="receipt-area" class="receipt-area">
+            <h3 style="text-align: center;">=========== 영수증 ===========</h3>
+            <div id="receipt-content"></div>
+            <button onclick="resetCart()" class="btn reset-btn">확인 (처음으로)</button>
+        </div>
+    </div>
+</div>
+
+<!-- 프로모션 / 재고 안내 모달 -->
+<div id="promo-modal" class="modal-overlay">
+    <div class="modal">
+        <h3 id="promo-modal-title">🔔 프로모션 안내</h3>
+        <p>아래 혜택 및 안내를 확인해주세요.</p>
+
+        <div id="promo-list"></div>
+
+        <div class="modal-actions">
+            <button onclick="handleModalResponse(false)" class="btn cancel-btn">아니요</button>
+            <button id="promo-confirm-btn" onclick="handleModalResponse(true)" class="btn">
+                예 (선택/확인)
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 멤버십 적용 모달 (프로모션 모달과 동일한 구조) -->
+<div id="membership-modal" class="modal-overlay">
+    <div class="modal">
+        <h3>💳 멤버십 할인</h3>
+
+        <p>멤버십 할인을 적용하시겠습니까?</p>
+
+        <div class="modal-actions">
+            <button onclick="handleMembership(false)" class="btn cancel-btn">아니요</button>
+            <button onclick="handleMembership(true)" class="btn">예</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
