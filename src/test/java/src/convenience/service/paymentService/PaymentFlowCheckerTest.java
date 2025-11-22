@@ -2,6 +2,8 @@ package src.convenience.service.paymentService;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static src.convenience.productEnum.TestProductId.COKE;
+import static src.convenience.productEnum.TestProductId.JUICE;
 
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,15 +32,15 @@ class PaymentFlowCheckerTest {
     }
 
     private void cartSetup() {
-        cart.addItem(1L, 5);
-        cart.addItem(3L, 9);
+        cart.addItem(COKE.id(), 5);
+        cart.addItem(JUICE.id(), 9);
     }
 
     @Test
     void 결제중_프로모션_누락_예외_테스트() {
         PayRequest request = new PayRequest(null, true, true);
 
-        assertThatThrownBy(() -> checker.checkFlow(request, Map.of(1L, 5)))
+        assertThatThrownBy(() -> checker.checkFlow(request, Map.of(COKE.id(), 5)))
                 .isInstanceOf(PromotionProductException.class);
     }
 
@@ -47,7 +49,7 @@ class PaymentFlowCheckerTest {
     void 결제중_프로모션_누락이지만_재고까지_부족_예외_테스트() {
         PayRequest request = new PayRequest(true, null, true);
 
-        assertThatThrownBy(() -> checker.checkFlow(request, Map.of(3L, 9)))
+        assertThatThrownBy(() -> checker.checkFlow(request, Map.of(JUICE.id(), 9)))
                 .isInstanceOf(PromotionProductException.class);
     }
 
@@ -77,7 +79,7 @@ class PaymentFlowCheckerTest {
         Map<Long, Integer> items = cart.getItems();
         PayRequest request = new PayRequest(true, true, true);
 
-        assertThatCode(() ->  checker.checkFlow(request, items))
+        assertThatCode(() -> checker.checkFlow(request, items))
                 .doesNotThrowAnyException();
     }
 }
