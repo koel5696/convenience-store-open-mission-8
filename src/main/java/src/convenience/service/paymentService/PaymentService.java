@@ -10,9 +10,9 @@ import src.convenience.domain.entity.product.Product;
 import src.convenience.domain.entity.product.ProductRepository;
 import src.convenience.domain.entity.promotion.PromotionResult;
 import src.convenience.domain.receiptGenerator.ReceiptGenerator;
-import src.convenience.dto.receipt.ReceiptResponse.ReceiptItem;
 import src.convenience.dto.payment.PayRequest;
 import src.convenience.dto.receipt.ReceiptResponse;
+import src.convenience.dto.receipt.ReceiptResponse.ReceiptItem;
 
 @Service
 public class PaymentService {
@@ -29,28 +29,30 @@ public class PaymentService {
 
     @Transactional
     public ReceiptResponse pay(PayRequest request) {
-        Map<Long, Integer> items = cart.getItems();
+        Map<Long, Integer> cartItems = cart.getItems();
         cart.checkCartEmpty();
 
-        processor.checkPaymentFlow(request, items); //사용자 중간 입력사항 검증
-        List<ReceiptItem> paymentItems = generatePaymentItems(items); // 영수증에 들어갈 아이템 구분
-        int membershipDiscount = processor.membershipDiscount(request, paymentItems); // 멤버십 적용
+        processor.checkPaymentFlow(request, cartItems);
+
+        List<ReceiptItem> ReceiptItems = generateReceiptItems(request, cartItems);
+        int membershipDiscount = processor.membershipDiscount(request, ReceiptItems);
 
         cart.clear();
-        return ReceiptGenerator.generateReceipt(paymentItems, membershipDiscount);
+        return ReceiptGenerator.generateReceipt(ReceiptItems, membershipDiscount);
     }
 
-    private List<ReceiptItem> generatePaymentItems(Map<Long, Integer> items) {
-        List<ReceiptItem> finalItems = new ArrayList<>();
+    private List<ReceiptItem> generateReceiptItems(PayRequest request, Map<Long, Integer> items) {
+        List<ReceiptItem> receiptItems = new ArrayList<>();
 
         items.forEach((productId, quantity) -> {
             Product product = productRepository.getByIdOrThrow(productId);
-            PromotionResult result = processor.promotionFlow(product, quantity);
-            finalItems.add(new ReceiptItem(product.getName(), product.getPromotion(), product.getPrice(),
-                    result.paidQuantity(), result.giftQuantity()));
+            PromotionResult result = processor.promotionFlow(request, product, quantity);
+            receiptItems.add(new ReceiptItem(product.getName(), product.getPromotion(), product.getPrice(),
+                    result.paidQuantity(), result.giftQuantity(), result.nonePromotionQuantity()));
             decreaseStock(product, quantity);
         });
-        return finalItems;
+
+        return receiptItems;
     }
 
     private void decreaseStock(Product product, Integer quantity) {
