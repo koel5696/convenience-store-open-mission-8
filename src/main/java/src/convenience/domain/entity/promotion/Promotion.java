@@ -1,5 +1,10 @@
 package src.convenience.domain.entity.promotion;
 
+import static src.convenience.domain.entity.promotion.promotionPolicy.PromotionType.LIMITED_ONE_PLUS_ONE;
+import static src.convenience.domain.entity.promotion.promotionPolicy.PromotionType.NONE_PROMOTION;
+import static src.convenience.domain.entity.promotion.promotionPolicy.PromotionType.ONE_PLUS_ONE;
+import static src.convenience.domain.entity.promotion.promotionPolicy.PromotionType.TWO_PLUS_ONE;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +20,6 @@ import src.convenience.dto.payment.PayRequest;
 @Entity
 @Table(name = "promotion")
 public class Promotion {
-    private static final String NONE_PROMOTION = "null";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,12 +53,12 @@ public class Promotion {
     }
 
     public static Promotion none() {
-        return new Promotion(NONE_PROMOTION, 0, 0,
+        return new Promotion(NONE_PROMOTION.getPromotionType(), 0, 0,
                 LocalDate.MIN, LocalDate.MAX);
     }
 
     public static boolean checkNonePromotion(String promotion) {
-        return promotion.equals(NONE_PROMOTION);
+        return promotion.equals(NONE_PROMOTION.getPromotionType());
     }
 
     public boolean isMissingPromotion(int quantity) {
@@ -84,7 +88,7 @@ public class Promotion {
     }
 
     public boolean checkNonePromotion() {
-        return name.equals(NONE_PROMOTION);
+        return name.equals(NONE_PROMOTION.getPromotionType());
     }
 
     private boolean checkPromotionDate() {
@@ -105,10 +109,10 @@ public class Promotion {
     }
 
     private PromotionPolicy selectPolicy() {
-        if (name.equals("1+1") || name.equals("한정 1+1")) {
+        if (name.equals(ONE_PLUS_ONE.getPromotionType()) || name.equals(LIMITED_ONE_PLUS_ONE.getPromotionType())) {
             return new OnePlusOnePolicy();
         }
-        if (name.equals("2+1")) {
+        if (name.equals(TWO_PLUS_ONE.getPromotionType())) {
             return new TwoPlusOnePolicy();
         }
         throw new IllegalStateException("알수 없는 프로모션: " + name);
