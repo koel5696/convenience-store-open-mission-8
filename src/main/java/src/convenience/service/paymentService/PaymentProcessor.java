@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import src.convenience.domain.entity.product.Product;
 import src.convenience.domain.entity.promotion.Promotion;
 import src.convenience.domain.entity.promotion.PromotionRepository;
-import src.convenience.domain.membership.Membership;
 import src.convenience.domain.entity.promotion.PromotionResult;
+import src.convenience.domain.membership.Membership;
 import src.convenience.dto.payment.PayRequest;
 import src.convenience.dto.receipt.ReceiptResponse.ReceiptItem;
 
@@ -18,7 +18,8 @@ public class PaymentProcessor {
     private final PromotionRepository promotionRepository;
     private final Membership membership;
 
-    public PaymentProcessor(PaymentFlowChecker paymentFlowChecker, PromotionRepository promotionRepository, Membership membership) {
+    public PaymentProcessor(PaymentFlowChecker paymentFlowChecker, PromotionRepository promotionRepository,
+                            Membership membership) {
         this.paymentFlowChecker = paymentFlowChecker;
         this.promotionRepository = promotionRepository;
         this.membership = membership;
@@ -28,9 +29,9 @@ public class PaymentProcessor {
         paymentFlowChecker.checkFlow(request, items);
     }
 
-    public PromotionResult promotionFlow(Product product, int quantity) {
+    public PromotionResult promotionFlow(PayRequest request, Product product, int quantity) {
         Promotion promotion = promotionRepository.promotionCreate(product.getPromotion());
-        return promotion.applyPromotion(quantity);
+        return promotion.applyPromotion(request, quantity);
     }
 
     public int membershipDiscount(PayRequest request, List<ReceiptItem> items) {
