@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import src.convenience.dto.cart.CartRequest;
 import src.convenience.service.cartService.CartService;
 
-
 @RestController
 public class CartController {
     private final CartService cartService;
@@ -21,17 +20,18 @@ public class CartController {
     @PostMapping("/api/cart/add")
     public ResponseEntity<String> addItemToCart(@RequestBody CartRequest request) {
         cartService.addItem(request.productId(), request.quantity());
-        return ResponseEntity.ok("상품이 성공적으로 추가되었습니다.");
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("api/cart/remove")
     public ResponseEntity<String> removeItemToCart(@RequestBody CartRequest request) {
         cartService.removeItem(request.productId());
-        return  ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/api/cart")
     public ResponseEntity<Map<Long, Integer>> getCart() {
+
         return ResponseEntity.ok(cartService.getCartItems());
     }
 
