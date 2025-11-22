@@ -8,7 +8,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     default Promotion promotionCreate(String name) {
         if (Promotion.checkNonePromotion(name)) {
-            return Promotion.none(); // NONE 전용 Promotion 객체 반환 (직접 만들기)
+            return Promotion.none(); // null 전용 Promotion 객체 반환
         }
 
         return findByName(name)
