@@ -2,6 +2,7 @@ package src.convenience.domain.entity.product;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static src.convenience.domain.entity.promotion.promotionPolicy.PromotionType.ONE_PLUS_ONE;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ public class ProductTest {
 
     @BeforeEach
     void init() {
-        product = new Product("콜라", 1000, 5, "1+1");
+        product = new Product("콜라", 1000, 5, ONE_PLUS_ONE.getPromotionType());
     }
 
     @Test
