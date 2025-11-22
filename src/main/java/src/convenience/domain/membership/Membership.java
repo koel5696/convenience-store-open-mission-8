@@ -12,8 +12,8 @@ public class Membership {
 
     public int discount(PayRequest request, List<ReceiptItem> items) {
         if (Boolean.TRUE.equals(request.membership())) {
-            int nonPromotionTotal = calculateNonPromotionAmount(items);
-            int discount = (int) (nonPromotionTotal * (DISCOUNT_PERCENT / 100.0));
+            int nonPromotionPriceTotal = calculateNonPromotionAmount(items);
+            int discount = (int) (nonPromotionPriceTotal * (DISCOUNT_PERCENT / 100.0));
             return Math.min(discount, MAX_DISCOUNT_AMOUNT);
         }
         return 0;
@@ -21,8 +21,7 @@ public class Membership {
 
     private int calculateNonPromotionAmount(List<ReceiptItem> items) {
         return items.stream()
-                .filter(ReceiptItem::isNonPromotion)
-                .mapToInt(item -> item.price() * item.paidQuantity())
+                .mapToInt(item -> item.price() * item.nonePromotionQuantity())
                 .sum();
     }
 }
