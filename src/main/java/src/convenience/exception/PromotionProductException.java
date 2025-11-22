@@ -7,7 +7,7 @@ public class PromotionProductException extends RuntimeException {
     private final PromotionSuggestionsResponse suggestions;
 
     public PromotionProductException(PromotionSuggestionsResponse suggestions) {
-        super("프로모션 상품 이슈로 추가 선택이 필요합니다.");
+        super("프로모션 관련 사용자 선택 필요");
         this.suggestions = suggestions;
     }
 
