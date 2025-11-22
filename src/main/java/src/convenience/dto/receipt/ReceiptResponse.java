@@ -12,10 +12,8 @@ public record ReceiptResponse(
                               String promotion,
                               int price,
                               int paidQuantity,
-                              int giftQuantity
+                              int giftQuantity,
+                              int nonePromotionQuantity
     ) {
-        public boolean isNonPromotion() {
-            return promotion.equals("null");
-        }
     }
 }
