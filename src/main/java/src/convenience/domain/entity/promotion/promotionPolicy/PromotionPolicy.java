@@ -1,4 +1,4 @@
-package src.convenience.domain.promotionPolicy;
+package src.convenience.domain.entity.promotion.promotionPolicy;
 
 import src.convenience.dto.payment.PayRequest;
 
