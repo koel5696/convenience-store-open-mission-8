@@ -12,8 +12,8 @@ import src.convenience.domain.entity.promotion.PromotionRepository;
 import src.convenience.dto.payment.PayRequest;
 import src.convenience.dto.payment.PromotionSuggestionsResponse;
 import src.convenience.dto.payment.PromotionSuggestionsResponse.PromotionOption;
-import src.convenience.exception.MembershipException;
-import src.convenience.exception.PromotionProductException;
+import src.convenience.exception.BusinessException;
+import src.convenience.exception.constants.ErrorCode;
 
 @Service
 public class PaymentFlowChecker {
@@ -38,19 +38,19 @@ public class PaymentFlowChecker {
 
     private void validateMissingPromotion(Boolean userSelection, List<PromotionOption> missingPromotionItems) {
         if (!missingPromotionItems.isEmpty() && userSelection == null) {
-            throw new PromotionProductException(new PromotionSuggestionsResponse(missingPromotionItems, List.of()));
+            throw new BusinessException(ErrorCode.PROMOTION_MISS);
         }
     }
 
     private void validateStockIssue(Boolean userSelection, List<PromotionOption> stockIssues) {
         if (!stockIssues.isEmpty() && userSelection == null) {
-            throw new PromotionProductException(new PromotionSuggestionsResponse(List.of(), stockIssues));
+            throw new BusinessException(ErrorCode.PROMOTION_MISS_BUT_OUT_OF_STOCK);
         }
     }
 
     private void validateMembership(Boolean membership) {
         if (membership == null) {
-            throw new MembershipException();
+            throw new BusinessException(ErrorCode.MEMBERSHIP_INVALID);
         }
     }
 

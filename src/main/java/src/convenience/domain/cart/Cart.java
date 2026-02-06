@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
+import src.convenience.exception.BusinessException;
+import src.convenience.exception.constants.ErrorCode;
 
 @Component
 @SessionScope
@@ -16,7 +18,7 @@ public class Cart {
 
     public void removeItem(Long productId) {
         if (!items.containsKey(productId)) {
-            throw new IllegalArgumentException("장바구니에 해당 상품이 없습니다.");
+            throw new BusinessException(ErrorCode.NOT_EXIST_IN_CART);
         }
         items.remove(productId);
     }
@@ -31,7 +33,7 @@ public class Cart {
 
     public void checkCartEmpty() {
         if (items == null || items.isEmpty()) {
-            throw new IllegalArgumentException("장바구니가 비어있습니다");
+            throw new IllegalArgumentException();
         }
     }
 

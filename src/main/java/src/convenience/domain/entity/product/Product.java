@@ -2,10 +2,12 @@ package src.convenience.domain.entity.product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import src.convenience.exception.BusinessException;
+import src.convenience.exception.constants.ErrorCode;
 
 @Entity
 @Table(name = "product")
@@ -43,8 +45,8 @@ public class Product {
     }
 
     public void checkQuantity(int quantityToCheck) {
-        if(quantity < quantityToCheck) {
-            throw new IllegalArgumentException("재고가 부족합니다. (남은 재고: " + this.quantity + "개)");
+        if (quantity < quantityToCheck) {
+            throw new BusinessException(ErrorCode.OUT_OF_STOCK);
         }
     }
 
