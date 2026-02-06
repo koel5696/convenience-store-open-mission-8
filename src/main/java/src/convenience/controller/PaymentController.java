@@ -15,7 +15,6 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-
     @PostMapping("/api/pay")
     public ResponseEntity<?> pay(@RequestBody PayRequest request) {
         return ResponseEntity.ok(paymentService.pay(request));

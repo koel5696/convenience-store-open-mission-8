@@ -18,21 +18,20 @@ public class CartController {
     }
 
     @PostMapping("/api/cart/add")
-    public ResponseEntity<String> addItemToCart(@RequestBody CartRequest request) {
+    public ResponseEntity<ApiResponse<CartRequest>> addItemToCart(@RequestBody CartRequest request) {
         cartService.addItem(request.productId(), request.quantity());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiResponse.success(request));
     }
 
     @PostMapping("api/cart/remove")
-    public ResponseEntity<String> removeItemToCart(@RequestBody CartRequest request) {
+    public ResponseEntity<ApiResponse<CartRequest>> removeItemToCart(@RequestBody CartRequest request) {
         cartService.removeItem(request.productId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiResponse.success(request));
     }
 
     @GetMapping("/api/cart")
-    public ResponseEntity<Map<Long, Integer>> getCart() {
-
-        return ResponseEntity.ok(cartService.getCartItems());
+    public ResponseEntity<ApiResponse<Map<Long, Integer>>> getCart() {
+        return ResponseEntity.ok(ApiResponse.success(cartService.getCartItems()));
     }
 
 
