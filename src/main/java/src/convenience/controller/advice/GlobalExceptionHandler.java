@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
             LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<?> handleStockIssue(BusinessException e) {
+    public ResponseEntity<?> businessHandle(BusinessException e) {
         ErrorCode errorCode = e.getErrorCode();
         ApiError apiError = errorCode.toApiError();
 

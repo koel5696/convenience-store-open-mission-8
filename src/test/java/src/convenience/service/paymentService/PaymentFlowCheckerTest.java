@@ -13,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import src.convenience.domain.cart.Cart;
 import src.convenience.dto.payment.PayRequest;
-import src.convenience.exception.MembershipException;
-import src.convenience.exception.PromotionProductException;
+import src.convenience.exception.BusinessException;
 
 @SpringBootTest
 @Transactional
@@ -41,7 +40,7 @@ class PaymentFlowCheckerTest {
         PayRequest request = new PayRequest(null, true, true);
 
         assertThatThrownBy(() -> checker.checkFlow(request, Map.of(COKE.id(), 5)))
-                .isInstanceOf(PromotionProductException.class);
+                .isInstanceOf(BusinessException.class);
     }
 
 
@@ -50,7 +49,7 @@ class PaymentFlowCheckerTest {
         PayRequest request = new PayRequest(true, null, true);
 
         assertThatThrownBy(() -> checker.checkFlow(request, Map.of(JUICE.id(), 9)))
-                .isInstanceOf(PromotionProductException.class);
+                .isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -60,7 +59,7 @@ class PaymentFlowCheckerTest {
         PayRequest request = new PayRequest(null, null, true);
 
         assertThatThrownBy(() -> checker.checkFlow(request, items))
-                .isInstanceOf(PromotionProductException.class);
+                .isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -70,7 +69,7 @@ class PaymentFlowCheckerTest {
         PayRequest request = new PayRequest(true, true, null);
 
         assertThatThrownBy(() -> checker.checkFlow(request, items))
-                .isInstanceOf(MembershipException.class);
+                .isInstanceOf(BusinessException.class);
     }
 
     @Test

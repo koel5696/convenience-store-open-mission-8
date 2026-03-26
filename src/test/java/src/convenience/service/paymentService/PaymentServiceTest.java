@@ -20,7 +20,7 @@ import src.convenience.domain.entity.product.ProductRepository;
 import src.convenience.dto.payment.PayRequest;
 import src.convenience.dto.receipt.ReceiptResponse;
 import src.convenience.dto.receipt.ReceiptResponse.ReceiptItem;
-import src.convenience.exception.PromotionProductException;
+import src.convenience.exception.BusinessException;
 
 @SpringBootTest
 @Transactional
@@ -148,7 +148,7 @@ class PaymentServiceTest {
         // 사용자에게 재고 부족으로 증정품 증정 불가 메시지 예외 전달
         PayRequest request1 = new PayRequest(null, null, true);
         assertThatThrownBy(() -> paymentService.pay(request1))
-                .isInstanceOf(PromotionProductException.class);
+                .isInstanceOf(BusinessException.class);
 
         // 사용자는 새롭게 결제 취소(false)를 날림. 프론트에서 pay()가 재실행되지 않음!!
         new PayRequest(null, false, true);
