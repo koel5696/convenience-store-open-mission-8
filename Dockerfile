@@ -5,7 +5,7 @@ COPY . .
 RUN gradle build --no-daemon -x test
 
 # 2단계: 실행
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk-jammy
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
